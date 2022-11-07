@@ -1,13 +1,18 @@
 const canvas = document.querySelector('#gameField');
 const field = canvas.getContext('2d');
 
-window.addEventListener('load', startGame);
+let canvasSize;
+let elementSize;
+
+window.addEventListener('load', setCanvasSize);
 // El evento load en window, permite saber cuando el html se ah cargado por completo
 // para poder iniciar caulquier otro tipo de código.
 
-function startGame() {
-    let canvasSize;
+window.addEventListener('resize', setCanvasSize);
+// El evento resize permite saber cuando las dimensiones de la ventana del navegador
+// cambian, para poder ejecutar alguna ación.
 
+function setCanvasSize() {
     if (window.innerHeight > window.innerWidth) {
         canvasSize = window.innerWidth * 0.75;
     } else {
@@ -21,8 +26,12 @@ function startGame() {
     canvas.setAttribute('width',canvasSize);
     canvas.setAttribute('height',canvasSize);
 
-    const elementSize = canvasSize / 10;
+    elementSize = canvasSize / 10;
 
+    startGame();
+}
+
+function startGame() {
     field.font = elementSize + 'px Verdana';
     // field.textBaseline = 'top';
     field.textAlign = 'end';
