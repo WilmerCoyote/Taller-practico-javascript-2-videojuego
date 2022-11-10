@@ -29,8 +29,8 @@ maps.push(`
   XX----XXXX
   X--XX-XXXX
   X-XXX--XXX
-  X-XXXX-XXX
-  XX--XX--XX
+  X--XXX-XXX
+  XX-XXX--XX
   XX--XXX-XX
   XXXX---IXX
   XXXXXXXXXX

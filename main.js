@@ -32,21 +32,29 @@ function setCanvasSize() {
 }
 
 function startGame() {
-    field.font = elementSize + 'px Verdana';
-    // field.textBaseline = 'top';
-    field.textAlign = 'end';
+    field.font = 0.9*elementSize + 'px Verdana';
+    field.textBaseline = 'top';
 
     const map = maps[2];
-    const mapRows = maps[2].trim().split('\n');
-    const mapCols = mapRows.map(row => row.trim().split(''));
+    const mapRows = map.trim().split('\n');
+    const mapRowCols = mapRows.map(row => row.trim().split(''));
+    // El método trim se utiliza para limpiar todos los espacios en blanco de una
+    // cadena de texto.
+    // El método split por su parte, separa una cadena de texto dependiedo de un
+    // carácter separador designado y crea un arreglo con los diferentes elementos
+    // obtenidos.
 
-    for (row = 1; row <= 10; row++) {
-        for (col = 1; col <=10; col++) {
-            let emoji = mapCols[row-1][col-1];
-            field.fillText(emojis[emoji],elementSize*col,elementSize*row);
-        }
-    }
+    // for (row = 1; row <= 10; row++) {
+    //     for (col = 1; col <=10; col++) {
+    //         let emoji = mapRowCols[row-1][col-1];
+    //         field.fillText(emojis[emoji],elementSize*col,elementSize*row);
+    //     }
+    // }
+
+    // Forma alternativa de renderizar el mapa:
+    mapRowCols.forEach((row, rowIndx) => {
+        row.forEach((col,colIndx) => {
+            field.fillText(emojis[col],elementSize*colIndx,elementSize*rowIndx);
+        });
+    });
 }
-const map = maps[0];
-    const mapRows = maps[0].trim().split('\n');
-    const mapCol = mapRows.map(row => row.trim().split(''));
