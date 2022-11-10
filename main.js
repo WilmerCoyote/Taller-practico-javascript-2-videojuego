@@ -36,7 +36,17 @@ function startGame() {
     // field.textBaseline = 'top';
     field.textAlign = 'end';
 
-    for (i = 1; i<=10; i++) {
-        field.fillText(emojis['X'],elementSize*i,elementSize*i);
+    const map = maps[2];
+    const mapRows = maps[2].trim().split('\n');
+    const mapCols = mapRows.map(row => row.trim().split(''));
+
+    for (row = 1; row <= 10; row++) {
+        for (col = 1; col <=10; col++) {
+            let emoji = mapCols[row-1][col-1];
+            field.fillText(emojis[emoji],elementSize*col,elementSize*row);
+        }
     }
 }
+const map = maps[0];
+    const mapRows = maps[0].trim().split('\n');
+    const mapCol = mapRows.map(row => row.trim().split(''));
