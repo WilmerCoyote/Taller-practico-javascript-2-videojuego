@@ -1,8 +1,24 @@
 const canvas = document.querySelector('#gameField');
 const field = canvas.getContext('2d');
+const btnUp = document.querySelector('#up');
+const btnLeft = document.querySelector('#left');
+const btnRight = document.querySelector('#right');
+const btnDown = document.querySelector('#down');
+let keys = {
+    Up: 38,
+    Left: 37,
+    Right: 39,
+    Down: 40
+}
 
 let canvasSize;
 let elementSize;
+let fieldLimit;
+
+let playerPosition = {
+    x: undefined,
+    y: undefined
+};
 
 window.addEventListener('load', setCanvasSize);
 // El evento load en window, permite saber cuando el html se ah cargado por completo
@@ -12,6 +28,7 @@ window.addEventListener('resize', setCanvasSize);
 // El evento resize permite saber cuando las dimensiones de la ventana del navegador
 // cambian, para poder ejecutar alguna ación.
 
+// Dimensionamiento y responsive del canvas:
 function setCanvasSize() {
     if (window.innerHeight > window.innerWidth) {
         canvasSize = window.innerWidth * 0.75;
@@ -27,15 +44,19 @@ function setCanvasSize() {
     canvas.setAttribute('height',canvasSize);
 
     elementSize = canvasSize / 10;
+    fieldLimit = canvasSize - elementSize;
+    
 
+    console.log(canvasSize, fieldLimit);
     startGame();
 }
 
+// Renderizado del mapa:
 function startGame() {
     field.font = 0.9*elementSize + 'px Verdana';
     field.textBaseline = 'top';
 
-    const map = maps[2];
+    const map = maps[0];
     const mapRows = map.trim().split('\n');
     const mapRowCols = mapRows.map(row => row.trim().split(''));
     // El método trim se utiliza para limpiar todos los espacios en blanco de una
@@ -52,9 +73,87 @@ function startGame() {
     // }
 
     // Forma alternativa de renderizar el mapa:
+    field.clearRect(0,0,canvasSize,canvasSize);
+
     mapRowCols.forEach((row, rowIndx) => {
         row.forEach((col,colIndx) => {
-            field.fillText(emojis[col],elementSize*colIndx,elementSize*rowIndx);
+            const posX = elementSize*colIndx;
+            const posY = elementSize*rowIndx;
+            const emoji = emojis[col];
+
+            if (col == 'O') {
+                if (!playerPosition.x && !playerPosition.y){
+                    playerPosition.x = posX;
+                    playerPosition.y = posY;
+                }
+            }
+
+            field.fillText(emoji,posX,posY);
         });
     });
+
+    movePlayer();
+}
+
+// Renderizado del movimiento del jugador:
+function movePlayer() {
+    field.fillText(emojis['PLAYER'],playerPosition.x,playerPosition.y);
+}
+
+// Implementación de botones:
+btnUp.addEventListener('click', moveUp);
+btnLeft.addEventListener('click', moveLeft);
+btnRight.addEventListener('click', moveRight);
+btnDown.addEventListener('click', moveDown);
+document.addEventListener('keyup', movement);
+
+function movement(event) {
+    switch (event.keyCode) {
+        case keys.Up:
+            moveUp();
+            break;
+        case keys.Left:
+            moveLeft();
+            break;
+        case keys.Right:
+            moveRight();
+            break;
+        case keys.Down:
+            moveDown();
+            break;
+        default:
+            break;
+    }
+}
+
+function moveUp() {
+    if (playerPosition.y > 5) {
+        playerPosition.y -= elementSize;
+        startGame();
+        console.log(playerPosition);
+    }
+}
+
+function moveLeft() {
+    if (playerPosition.x > 5) {
+        playerPosition.x -= elementSize;
+        startGame();
+        console.log(playerPosition);
+    }
+}
+
+function moveRight() {
+    if (playerPosition.x < fieldLimit) {
+        playerPosition.x += elementSize;
+        startGame();
+        console.log(playerPosition);
+    }
+}
+
+function moveDown() {
+    if (playerPosition.y < fieldLimit) {
+        playerPosition.y += elementSize;
+        startGame();
+        console.log(playerPosition);
+    }
 }
