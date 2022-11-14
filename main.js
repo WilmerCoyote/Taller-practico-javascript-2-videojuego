@@ -44,10 +44,9 @@ function setCanvasSize() {
     canvas.setAttribute('height',canvasSize);
 
     elementSize = canvasSize / 10;
-    fieldLimit = canvasSize - elementSize;
+    fieldLimit = canvasSize - 1;
     
-
-    console.log(canvasSize, fieldLimit);
+    console.log(canvasSize,elementSize);
     startGame();
 }
 
@@ -82,7 +81,7 @@ function startGame() {
             const emoji = emojis[col];
 
             if (col == 'O') {
-                if (!playerPosition.x && !playerPosition.y){
+                if ((playerPosition.x && playerPosition.y) == undefined){
                     playerPosition.x = posX;
                     playerPosition.y = posY;
                 }
@@ -127,7 +126,7 @@ function movement(event) {
 }
 
 function moveUp() {
-    if (playerPosition.y > 5) {
+    if ((playerPosition.y - elementSize) > -1) {
         playerPosition.y -= elementSize;
         startGame();
         console.log(playerPosition);
@@ -135,7 +134,7 @@ function moveUp() {
 }
 
 function moveLeft() {
-    if (playerPosition.x > 5) {
+    if ((playerPosition.x - elementSize) > -1) {
         playerPosition.x -= elementSize;
         startGame();
         console.log(playerPosition);
@@ -143,7 +142,7 @@ function moveLeft() {
 }
 
 function moveRight() {
-    if (playerPosition.x < fieldLimit) {
+    if ((playerPosition.x + elementSize) < fieldLimit) {
         playerPosition.x += elementSize;
         startGame();
         console.log(playerPosition);
@@ -151,7 +150,7 @@ function moveRight() {
 }
 
 function moveDown() {
-    if (playerPosition.y < fieldLimit) {
+    if ((playerPosition.y + elementSize) < fieldLimit) {
         playerPosition.y += elementSize;
         startGame();
         console.log(playerPosition);
