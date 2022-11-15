@@ -118,8 +118,8 @@ function startGame() {
 function movePlayer() {
     field.fillText(emojis['PLAYER'],playerPosition.x,playerPosition.y);
 
-    const giftCollisionX = playerPosition.x.toFixed(1) == giftPosition.x.toFixed(1);
-    const giftCollisionY = playerPosition.y.toFixed(1) == giftPosition.y.toFixed(1);
+    const giftCollisionX = playerPosition.x.toFixed(4) == giftPosition.x.toFixed(4);
+    const giftCollisionY = playerPosition.y.toFixed(4) == giftPosition.y.toFixed(4);
     // El método toFixed se encuantra disponible para todo dato que sea de tipo número, se
     // utiliza para limpiar los decimales del mismo y tomar en cuenta solamente la cantidad
     // designada de los digitos.
@@ -129,8 +129,8 @@ function movePlayer() {
     }
 
     bombPositions.forEach(bomb => {
-        const bombCollisionX = playerPosition.x.toFixed(1) == bomb.x.toFixed(1);
-        const bombCollisionY = playerPosition.y.toFixed(1) == bomb.y.toFixed(1);
+        const bombCollisionX = playerPosition.x.toFixed(4) == bomb.x.toFixed(4);
+        const bombCollisionY = playerPosition.y.toFixed(4) == bomb.y.toFixed(4);
 
         if (bombCollisionX && bombCollisionY) {
             alert('Has perdido una vida ;-;');
