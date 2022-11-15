@@ -117,16 +117,16 @@ function startGame() {
 function movePlayer() {
     field.fillText(emojis['PLAYER'],playerPosition.x,playerPosition.y);
 
-    const giftCollisionX = playerPosition.x == giftPosition.x;
-    const giftCollisionY = playerPosition.y == giftPosition.y;
+    const giftCollisionX = playerPosition.x.toFixed(2) == giftPosition.x.toFixed(2);
+    const giftCollisionY = playerPosition.y.toFixed(2) == giftPosition.y.toFixed(2);
 
     if (giftCollisionX && giftCollisionY) {
         alert('Has ganado!!! Pasa el siguiente nivel :D');
     }
 
     bombPositions.forEach(bomb => {
-        const bombCollisionX = playerPosition.x == bomb.x;
-        const bombCollisionY = playerPosition.y == bomb.y;
+        const bombCollisionX = playerPosition.x.toFixed(2) == bomb.x.toFixed(2);
+        const bombCollisionY = playerPosition.y.toFixed(2) == bomb.y.toFixed(2);
 
         if (bombCollisionX && bombCollisionY) {
             alert('Has perdido una vida ;-;');
