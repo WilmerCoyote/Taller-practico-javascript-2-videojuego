@@ -84,6 +84,7 @@ function startGame() {
 
     // Forma alternativa de renderizar el mapa:
     field.clearRect(0,0,canvasSize,canvasSize);
+    bombPositions.length = 0;
 
     mapRowCols.forEach((row, rowIndx) => {
         row.forEach((col,colIndx) => {
@@ -119,6 +120,9 @@ function movePlayer() {
 
     const giftCollisionX = playerPosition.x.toFixed(2) == giftPosition.x.toFixed(2);
     const giftCollisionY = playerPosition.y.toFixed(2) == giftPosition.y.toFixed(2);
+    // El método toFixed se encuantra disponible para todo dato que sea de tipo número, se
+    // utiliza para limpiar los decimales del mismo y tomar en cuenta solamente la cantidad
+    // designada de los digitos.
 
     if (giftCollisionX && giftCollisionY) {
         alert('Has ganado!!! Pasa el siguiente nivel :D');
