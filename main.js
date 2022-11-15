@@ -15,10 +15,21 @@ let canvasSize;
 let elementSize;
 let fieldLimit;
 
-let playerPosition = {
+const playerPosition = {
     x: undefined,
     y: undefined
 };
+
+const giftPosition = {
+    x: undefined,
+    y: undefined
+} 
+
+const bombPositions = [];
+// Cuando un objeto o arreglo se define como una constante en JavaScript, es posible
+// modificar sus elementos internos, dado que, asi es como funcionan este tipo de
+// variables. Lo que no se puede hacer es intentar cambiar en sí el tipo de variable,
+// es decir, tratar de convertir un objeto a un arreglo, a un booleano, etc.
 
 window.addEventListener('load', setCanvasSize);
 // El evento load en window, permite saber cuando el html se ah cargado por completo
@@ -55,7 +66,7 @@ function startGame() {
     field.font = 0.9*elementSize + 'px Verdana';
     field.textBaseline = 'top';
 
-    const map = maps[0];
+    const map = maps[1];
     const mapRows = map.trim().split('\n');
     const mapRowCols = mapRows.map(row => row.trim().split(''));
     // El método trim se utiliza para limpiar todos los espacios en blanco de una
@@ -85,6 +96,14 @@ function startGame() {
                     playerPosition.x = posX;
                     playerPosition.y = posY;
                 }
+            } else if (col == 'I') {
+                giftPosition.x = posX;
+                giftPosition.y = posY;
+            } else if (col == 'X') {
+                bombPositions.push({
+                    x: posX,
+                    y: posY
+                })
             }
 
             field.fillText(emoji,posX,posY);
@@ -97,6 +116,26 @@ function startGame() {
 // Renderizado del movimiento del jugador:
 function movePlayer() {
     field.fillText(emojis['PLAYER'],playerPosition.x,playerPosition.y);
+
+    const giftCollisionX = playerPosition.x == giftPosition.x;
+    const giftCollisionY = playerPosition.y == giftPosition.y;
+
+    if (giftCollisionX && giftCollisionY) {
+        alert('Has ganado!!! Pasa el siguiente nivel :D');
+    }
+
+    bombPositions.forEach(bomb => {
+        const bombCollisionX = playerPosition.x == bomb.x;
+        const bombCollisionY = playerPosition.y == bomb.y;
+
+        if (bombCollisionX && bombCollisionY) {
+            alert('Has perdido una vida ;-;');
+            playerPosition.x = undefined;
+            playerPosition.y = undefined;
+            
+            startGame();
+        }
+    })
 }
 
 // Implementación de botones:
