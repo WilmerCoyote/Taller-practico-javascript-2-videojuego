@@ -15,6 +15,8 @@ let canvasSize;
 let elementSize;
 let fieldLimit;
 
+let mapCount = 0;
+
 const playerPosition = {
     x: undefined,
     y: undefined
@@ -66,7 +68,7 @@ function startGame() {
     field.font = 0.9*elementSize + 'px Verdana';
     field.textBaseline = 'top';
 
-    const map = maps[1];
+    const map = maps[mapCount];
     const mapRows = map.trim().split('\n');
     const mapRowCols = mapRows.map(row => row.trim().split(''));
     // El método trim se utiliza para limpiar todos los espacios en blanco de una
@@ -125,7 +127,7 @@ function movePlayer() {
     // designada de los digitos.
 
     if (giftCollisionX && giftCollisionY) {
-        alert('Has ganado!!! Pasa el siguiente nivel :D');
+        changeMap();
     }
 
     bombPositions.forEach(bomb => {
@@ -133,13 +135,28 @@ function movePlayer() {
         const bombCollisionY = playerPosition.y.toFixed(4) == bomb.y.toFixed(4);
 
         if (bombCollisionX && bombCollisionY) {
-            alert('Has perdido una vida ;-;');
+            alert('jajajaja manca que eres :p');
             playerPosition.x = undefined;
             playerPosition.y = undefined;
             
             startGame();
         }
     })
+}
+
+// Cambiar de mapa al ganar el nivel:
+function changeMap() {
+    if (mapCount != maps.length - 1) {
+        alert('Felicidades, has ganado el nivel!!!');
+        mapCount++;
+
+        playerPosition.x = undefined;
+        playerPosition.y = undefined;
+
+        startGame();
+    } else {
+        alert('Felicidades, terminaste todos los niveles disponibles!!!' + ' Y puto el que lo lea X\'D');
+    }
 }
 
 // Implementación de botones:
