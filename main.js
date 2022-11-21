@@ -169,11 +169,11 @@ function movePlayer() {
 
 // Cambiar de mapa al ganar el nivel:
 function levelWin() {
-    if (mapCounter != maps.length - 1) {
-        mapCounter++;
-
         playerPosition.x = undefined;
         playerPosition.y = undefined;
+    
+    if (mapCounter != maps.length - 1) {
+        mapCounter++;
 
         startGame();
     } else {
