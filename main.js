@@ -214,7 +214,6 @@ function levelFail() {
 
         pTexts.innerText = 'Te quedaste sin vidas 😞';
         spanLives.innerText = '';
-        spanTime.innerText = '0';
 
         // mapCounter = 0;
         // livesCounter = 3;
