@@ -4,18 +4,27 @@ const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
-let keys = {
-    Up: 38,
-    Left: 37,
+const pTexts = document.querySelector('#texts');
+const spanLives = document.querySelector('#lives');
+const spanTime = document.querySelector('#time');
+const spanRecord = document.querySelector('#record');
+const keys = {
+    Up:    38,
+    Left:  37,
     Right: 39,
-    Down: 40
+    Down:  40
 }
 
 let canvasSize;
 let elementSize;
 let fieldLimit;
 
-let mapCount = 0;
+let mapCounter = 0;
+let livesCounter = 3;
+
+let timeStart;
+let timeInterval;
+let timePlayer;
 
 const playerPosition = {
     x: undefined,
@@ -68,7 +77,22 @@ function startGame() {
     field.font = 0.9*elementSize + 'px Verdana';
     field.textBaseline = 'top';
 
-    const map = maps[mapCount];
+    pTexts.innerText = '';
+
+    showLives();
+
+    if (timeStart == undefined) {
+        timeStart = Date.now();
+        timeInterval = setInterval(showTime,100);
+    }
+
+    if (localStorage.record) {
+        spanRecord.innerText = timeConverter(localStorage.record);
+    } else {
+        spanRecord.innerText = '--:--';
+    }
+
+    const map = maps[mapCounter];
     const mapRows = map.trim().split('\n');
     const mapRowCols = mapRows.map(row => row.trim().split(''));
     // El método trim se utiliza para limpiar todos los espacios en blanco de una
@@ -120,43 +144,87 @@ function startGame() {
 function movePlayer() {
     field.fillText(emojis['PLAYER'],playerPosition.x,playerPosition.y);
 
-    const giftCollisionX = playerPosition.x.toFixed(4) == giftPosition.x.toFixed(4);
-    const giftCollisionY = playerPosition.y.toFixed(4) == giftPosition.y.toFixed(4);
+    const giftCollisionX = playerPosition.x.toFixed(5) == giftPosition.x.toFixed(5);
+    const giftCollisionY = playerPosition.y.toFixed(5) == giftPosition.y.toFixed(5);
     // El método toFixed se encuantra disponible para todo dato que sea de tipo número, se
     // utiliza para limpiar los decimales del mismo y tomar en cuenta solamente la cantidad
     // designada de los digitos.
 
     if (giftCollisionX && giftCollisionY) {
-        changeMap();
+        levelWin();
     }
 
-    bombPositions.forEach(bomb => {
-        const bombCollisionX = playerPosition.x.toFixed(4) == bomb.x.toFixed(4);
-        const bombCollisionY = playerPosition.y.toFixed(4) == bomb.y.toFixed(4);
+    const bombCollision = bombPositions.find(bomb => {
+        const bombCollisionX = playerPosition.x.toFixed(5) == bomb.x.toFixed(5);
+        const bombCollisionY = playerPosition.y.toFixed(5) == bomb.y.toFixed(5);
+        return bombCollisionX && bombCollisionY;
+    });
 
-        if (bombCollisionX && bombCollisionY) {
-            alert('jajajaja manca que eres :p');
-            playerPosition.x = undefined;
-            playerPosition.y = undefined;
-            
-            startGame();
-        }
-    })
+    if (bombCollision) {
+       levelFail();
+    }
 }
 
 // Cambiar de mapa al ganar el nivel:
-function changeMap() {
-    if (mapCount != maps.length - 1) {
-        alert('Felicidades, has ganado el nivel!!!');
-        mapCount++;
+function levelWin() {
+    if (mapCounter != maps.length - 1) {
+        mapCounter++;
 
         playerPosition.x = undefined;
         playerPosition.y = undefined;
 
         startGame();
     } else {
-        alert('Felicidades, terminaste todos los niveles disponibles!!!' + ' Y puto el que lo lea X\'D');
+        clearInterval(timeInterval);
+
+        const currentRecord = Number(localStorage.record);
+
+        if (!localStorage.record) {
+            localStorage.setItem('record',timePlayer);
+            pTexts.innerText = '¡¡¡Felicidades, completaste todos los niveles!!!';
+        } else if (timePlayer < currentRecord) {
+            localStorage.setItem('record',timePlayer);
+            pTexts.innerText = '!!!Felicidades, lograste un nuevo récord!!!'
+        } else {
+            pTexts.innerText = 'No superaste el récord actual, se mas rápido la próxima :('
+        }
     }
+}
+
+// Reiciar pisición al perder:
+function levelFail() {
+    field.clearRect(playerPosition.x,playerPosition.y,elementSize,elementSize);
+    field.fillText(emojis['BOMB_COLLISION'],playerPosition.x,playerPosition.y);
+    
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
+
+    if (livesCounter > 1) {
+        livesCounter --;
+
+        setTimeout(startGame,500);
+    } else if (livesCounter == 1) {
+        clearInterval(timeInterval);
+
+        pTexts.innerText = 'Te quedaste sin vidas 😞';
+        spanTime.innerText = '0';
+
+        mapCounter = 0;
+        livesCounter = 3;
+        timeStart = undefined;
+
+        setTimeout(startGame,2000);
+    }
+}
+
+// Información de la sección de mensajes:
+function showLives() {
+    spanLives.innerText = emojis['HEART'].repeat(livesCounter);
+}
+
+function showTime() {
+    timePlayer = Date.now() - timeStart;
+    spanTime.innerText = timeConverter(timePlayer);
 }
 
 // Implementación de botones:
@@ -214,5 +282,23 @@ function moveDown() {
         playerPosition.y += elementSize;
         startGame();
         console.log(playerPosition);
+    }
+}
+
+// Conversor de milisegundos a minutos y segundos:
+function timeConverter (miliseconds) {
+    const milisecondNumber = Number(miliseconds);
+    const seconds = Number((milisecondNumber/1000).toFixed(0));
+
+    if (seconds >= 60) {
+        const minuts = Math.floor(seconds/60);
+        const residue = seconds%60;
+        if (residue < 10) {
+            return String(minuts + ':0' + residue);
+        } else {
+            return String(minuts + ':' + residue);
+        }
+    } else {
+        return String(seconds);
     }
 }
