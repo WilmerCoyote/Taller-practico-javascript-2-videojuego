@@ -67,8 +67,8 @@ body {
   }
   
   @media (max-width: 440px) {
-    .game-container { height: 80vh; }
-    button { margin-top: 15px; }
+    .game-container { height: 95vh; }
+    button { margin-top: 25px; }
     #up, #down { margin-left: 100%; margin-right: 100%; }
     #up { margin-top: 0px; }
   }

@@ -179,6 +179,8 @@ function levelWin() {
     } else {
         clearInterval(timeInterval);
 
+        victory();
+
         const currentRecord = Number(localStorage.record);
 
         if (!localStorage.record) {
@@ -186,9 +188,9 @@ function levelWin() {
             pTexts.innerText = '¡¡¡Felicidades, completaste todos los niveles!!!';
         } else if (timePlayer < currentRecord) {
             localStorage.setItem('record',timePlayer);
-            pTexts.innerText = '!!!Felicidades, lograste un nuevo récord!!!'
+            pTexts.innerText = '!!!Felicidades, lograste un nuevo récord!!!';
         } else {
-            pTexts.innerText = 'No superaste el récord actual, se mas rápido la próxima :('
+            pTexts.innerText = 'No superaste el récord actual, se mas rápido la próxima :(';
         }
     }
 }
@@ -208,15 +210,41 @@ function levelFail() {
     } else if (livesCounter == 1) {
         clearInterval(timeInterval);
 
+        gameOver();
+
         pTexts.innerText = 'Te quedaste sin vidas 😞';
+        spanLives.innerText = '';
         spanTime.innerText = '0';
 
-        mapCounter = 0;
-        livesCounter = 3;
-        timeStart = undefined;
+        // mapCounter = 0;
+        // livesCounter = 3;
+        // timeStart = undefined;
 
-        setTimeout(startGame,2000);
+        setTimeout(() => location.reload(),3000);
     }
+}
+
+// Pantallas de victoria o derrota:
+function victory() {
+    field.clearRect(0,0,canvasSize,canvasSize);
+    
+    field.font = 1.5*elementSize + 'px Times New Roman';
+    field.textAlign = 'center';
+    field.textBaseline = 'middle';
+
+    field.fillText('¡¡¡Victoria!!!',canvasSize/2,canvasSize/2);
+
+    setTimeout(() => location.reload(), 4000);
+}
+
+function gameOver() {
+    field.clearRect(0,0,canvasSize,canvasSize);
+    
+    field.font = 1.4*elementSize + 'px Times New Roman';
+    field.textAlign = 'center';
+    field.textBaseline = 'middle';
+
+    field.fillText('¡¡¡Game Over!!!',canvasSize/2,canvasSize/2)
 }
 
 // Información de la sección de mensajes:
