@@ -75,7 +75,7 @@ function setCanvasSize() {
 
 // Renderizado del mapa:
 function startGame() {
-    field.font = 0.9*elementSize + 'px Verdana';
+    field.font = 0.89*elementSize + 'px Verdana';
     field.textBaseline = 'top';
 
     pLevel.innerText = 'Nivel: ' + (mapCounter + 1);
@@ -291,7 +291,7 @@ function moveDown() {
 function clearElement () {
     const posX = playerPosition.x;
     const posY = playerPosition.y - 0.05*elementSize;
-    const limitX = 1.2*elementSize;
+    const limitX = 1.05*elementSize;
     const limitY = elementSize;
 
     field.clearRect(posX,posY,limitX,limitY);
