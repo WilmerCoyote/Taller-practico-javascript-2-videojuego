@@ -193,7 +193,7 @@ function levelWin() {
 
 // Reiciar pisición al perder:
 function levelFail() {
-    field.clearRect(playerPosition.x,playerPosition.y,elementSize,elementSize);
+    clearElement();
     field.fillText(emojis['BOMB_COLLISION'],playerPosition.x,playerPosition.y);
     
     playerPosition.x = undefined;
@@ -283,6 +283,16 @@ function moveDown() {
         startGame();
         console.log(playerPosition);
     }
+}
+
+// Función para limpiar elementos:
+function clearElement () {
+    const posX = playerPosition.x - 0.1*elementSize;
+    const posY = playerPosition.y - 0.15*elementSize;
+    const limitX = 1.15*elementSize;
+    const limitY = 1.1*elementSize;
+
+    field.clearRect(posX,posY,limitX,limitY);
 }
 
 // Conversor de milisegundos a minutos y segundos:
