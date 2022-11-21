@@ -57,6 +57,11 @@ body {
     width: 100%;
   }
 
+  #level {
+    font-weight: bold;
+    text-align: center;
+  }
+
   #texts {
     text-align: center;
   }

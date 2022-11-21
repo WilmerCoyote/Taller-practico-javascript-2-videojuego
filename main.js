@@ -4,6 +4,7 @@ const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
+const pLevel = document.querySelector('#level');
 const pTexts = document.querySelector('#texts');
 const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
@@ -77,6 +78,7 @@ function startGame() {
     field.font = 0.9*elementSize + 'px Verdana';
     field.textBaseline = 'top';
 
+    pLevel.innerText = 'Nivel: ' + (mapCounter + 1);
     pTexts.innerText = '';
 
     showLives();
@@ -287,10 +289,10 @@ function moveDown() {
 
 // Función para limpiar elementos:
 function clearElement () {
-    const posX = playerPosition.x - 0.1*elementSize;
-    const posY = playerPosition.y - 0.15*elementSize;
-    const limitX = 1.15*elementSize;
-    const limitY = 1.1*elementSize;
+    const posX = playerPosition.x;
+    const posY = playerPosition.y - 0.05*elementSize;
+    const limitX = 1.2*elementSize;
+    const limitY = elementSize;
 
     field.clearRect(posX,posY,limitX,limitY);
 }
