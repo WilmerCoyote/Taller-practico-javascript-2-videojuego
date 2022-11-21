@@ -290,8 +290,8 @@ function moveDown() {
 // Función para limpiar elementos:
 function clearElement () {
     const posX = playerPosition.x;
-    const posY = playerPosition.y - 0.05*elementSize;
-    const limitX = 1.05*elementSize;
+    const posY = playerPosition.y - 0.07*elementSize;
+    const limitX = 1.1*elementSize;
     const limitY = elementSize;
 
     field.clearRect(posX,posY,limitX,limitY);
